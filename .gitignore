@@ -1,0 +1,4 @@
+/.pytest_cache/
+/test/.pytest_cache/
+/venv/
+/startup.bat
