@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, mixins, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -19,10 +19,18 @@ def api_root(request, format=None):
         }
     )
 
-class InventoryItemViewSet(viewsets.ReadOnlyModelViewSet):
+class InventoryItemViewSet(viewsets.ModelViewSet):
     queryset = InventoryItem.objects.all()
     serializer_class = InventoryItemSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
+
+    def create(self, request):
+        response = {'message': 'POST method is not allowed.'}
+        return Response(response, status=status.HTTP_403_FORBIDDEN)
+
+    def destroy(self, request, pk=None):
+        response = {'message': 'DELETE method is not allowed.'}
+        return Response(response, status=status.HTTP_403_FORBIDDEN)
 
 class ShoppingListItemViewSet(viewsets.ModelViewSet):
     queryset = ShoppingListItem.objects.all()
@@ -31,7 +39,7 @@ class ShoppingListItemViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         if serializer.is_valid():
-            newshoppinglistitem = serializer.save(creator=self.request.user)
+            newshoppinglistitem = serializer.save(buyer=self.request.user)
 
             inv = InventoryItem(creator=self.request.user, name=newshoppinglistitem.item_name,
                                 brand=newshoppinglistitem.item_brand,

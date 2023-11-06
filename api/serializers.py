@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from api.models import ShoppingListItem, InventoryItem, GROCERY_STORES
+from api.models import ShoppingListItem, InventoryItem, GroceryStore
 
 
 class InventoryItemSerializer(serializers.HyperlinkedModelSerializer):
@@ -28,8 +28,8 @@ class ShoppingListItemSerializer(serializers.HyperlinkedModelSerializer):
         return value
 
     def validate_item_grocery_store(self, value):
-        if [item for item in GROCERY_STORES if value in item] is None:
-            raise serializers.ValidationError(f'item grocery store must be any of {GROCERY_STORES}: {value}')
+        if [item for item in GroceryStore.choices if value in item] is None:
+            raise serializers.ValidationError(f'item grocery store must be any of {GroceryStore.choices}: {value}')
         return value
 
     # def validate(self, data):
