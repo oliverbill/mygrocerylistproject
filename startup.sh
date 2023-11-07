@@ -15,4 +15,5 @@ python manage.py migrate --noinput
 # Start the server using gunicorn
 echo "Starting the server"
 
-gunicorn --env DJANGO_SETTINGS_MODULE=mygrocerylistapp.settings mygrocerylistapp.wsgi:application --bind 0.0.0.0:8000
+#gunicorn --env DJANGO_SETTINGS_MODULE=mygrocerylistapp.settings mygrocerylistapp.wsgi:application --bind 0.0.0.0:8000
+gunicorn mygrocerylistapp.wsgi:application --bind 0.0.0.0:8000
