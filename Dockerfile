@@ -10,4 +10,4 @@ COPY . .
 
 RUN chmod +x /app/startup.sh
 
-CMD ["./startup.sh"]
+#CMD ["./startup.sh"]
