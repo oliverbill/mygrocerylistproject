@@ -4,3 +4,5 @@
 /startup.bat
 /.idea
 /api/migrations/__init__.py
+/.aws/credentials
+/mygrocerylistapp.log

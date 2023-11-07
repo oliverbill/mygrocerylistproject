@@ -29,8 +29,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
-# Application definition
+SECRET_KEY = 'django-insecure-g%307@2mqxm41xo1utug+q5-pmo*-hez6d-t7k76xhg$upm-4f'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
