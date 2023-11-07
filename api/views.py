@@ -1,5 +1,9 @@
+import logging
+from contextvars import Token
+
 from django.contrib.auth.models import User
 from rest_framework import permissions, viewsets, mixins, status
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -8,9 +12,11 @@ from api.models import ShoppingListItem, InventoryItem
 from api.serializers import UserSerializer, ShoppingListItemSerializer, \
     InventoryItemSerializer
 
+logger = logging.getLogger('views.api_root()')
 
 @api_view(["GET"])
 def api_root(request, format=None):
+    logger.debug('getting into api_root()')
     return Response(
         {
             "users": reverse("user-list", request=request, format=format),
@@ -20,24 +26,29 @@ def api_root(request, format=None):
     )
 
 class InventoryItemViewSet(viewsets.ModelViewSet):
+    logger = logging.getLogger(__name__)
     queryset = InventoryItem.objects.all()
     serializer_class = InventoryItemSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def create(self, request):
+        logger.debug('getting into create()')
         response = {'message': 'POST method is not allowed.'}
         return Response(response, status=status.HTTP_403_FORBIDDEN)
 
     def destroy(self, request, pk=None):
+        logger.debug('getting into destroy()')
         response = {'message': 'DELETE method is not allowed.'}
         return Response(response, status=status.HTTP_403_FORBIDDEN)
 
 class ShoppingListItemViewSet(viewsets.ModelViewSet):
+    logger = logging.getLogger(__name__)
     queryset = ShoppingListItem.objects.all()
     serializer_class = ShoppingListItemSerializer
     permission_classes = (permissions.IsAuthenticatedOrReadOnly,)
 
     def perform_create(self, serializer):
+        logger.debug('getting into perform_create()')
         if serializer.is_valid():
             newshoppinglistitem = serializer.save(buyer=self.request.user)
 
@@ -48,5 +59,8 @@ class ShoppingListItemViewSet(viewsets.ModelViewSet):
             InventoryItem.save(inv)
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
+    logger = logging.getLogger(__name__)
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    logger.debug('getting into UserViewSet')
+

@@ -62,7 +62,8 @@ class ShoppingListItemE2ETest(APITestCase):
     def test_put(self):
         saved_shoppinglistitem = self.post_shoppinglistitem_and_getit_from_db()
         response = self.client.put(path=f'{self.base_url}{saved_shoppinglistitem.id}/',
-                                   ## PUT tem q passar todos os fields, senao da HTTP 400: campo c preenchimento obrigatorio
+                                   ## PUT tem q passar todos os fields, senao da HTTP 400:
+                                            # campo c preenchimento obrigatorio
                                    data={
                                        'item_name': self.shoppinglistitem_json['item_name'],
                                        'item_quantity': self.shoppinglistitem_json['item_quantity'],
