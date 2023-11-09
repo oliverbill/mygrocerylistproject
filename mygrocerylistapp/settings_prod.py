@@ -1,10 +1,10 @@
 from pathlib import Path
 import os
 
-from api.adapters import get_aws_secret
+# from api.adapters import get_aws_secret
 
-aws_postgres_secrets = get_aws_secret('rds!db-dd27cb78-20f7-4a97-bf98-2cdd9939be9c')
-django_app_secret = get_aws_secret('appsecretkey')
+# aws_postgres_secrets = get_aws_secret('rds!db-dd27cb78-20f7-4a97-bf98-2cdd9939be9c')
+# django_app_secret = get_aws_secret('appsecretkey')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -12,7 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['https://qb3xvafeq4.us-east-1.awsapprunner.com/']
+# ALLOWED_HOSTS = ['https://qb3xvafeq4.us-east-1.awsapprunner.com/']
+
+ALLOWED_HOSTS = ['https://mygrocerylistproject-j2uh3zo3oq-ew.a.run.app']
 
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
@@ -89,14 +91,26 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mygrocerylistapp.wsgi.application'
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         # 'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'proxy-db-mygrocerylistapp',
+#         'USER': aws_postgres_secrets['username'],
+#         'PASSWORD': aws_postgres_secrets['password'],
+#         'HOST': 'proxy-db-mygrocerylistapp.proxy-c1f8ef2qqlvh.us-east-1.rds.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # 'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'proxy-db-mygrocerylistapp',
-        'USER': aws_postgres_secrets['username'],
-        'PASSWORD': aws_postgres_secrets['password'],
-        'HOST': 'proxy-db-mygrocerylistapp.proxy-c1f8ef2qqlvh.us-east-1.rds.amazonaws.com',
+        'NAME': 'db-mygrocerylistapi',
+        'USER': 'postgres',
+        'PASSWORD': '$Matrix302$',
+        'HOST': '146.148.24.231',
         'PORT': '5432',
     }
 }

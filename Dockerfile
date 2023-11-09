@@ -4,10 +4,12 @@ WORKDIR /app
 
 COPY ./requirements.txt .
 
+COPY ./.aws .
+
 RUN pip install -r requirements.txt
 
 COPY . .
 
 RUN chmod +x /app/startup.sh
 
-#CMD ["./startup.sh"]
+CMD ["./startup.sh"]
