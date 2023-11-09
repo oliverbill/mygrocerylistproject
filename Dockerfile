@@ -1,15 +1,19 @@
-FROM python:3.9-alpine
+FROM python:3.9-slim
 
+COPY ./requirements.txt /requirements.txt
+COPY ./ /app
 WORKDIR /app
 
-COPY ./requirements.txt .
+RUN python -m venv /py && \
+    /py/bin/pip install --upgrade pip && \
+    /py/bin/pip install -r /requirements.txt && \
+    adduser --disabled-password --no-create-home django-user
 
-COPY ./.aws .
+ENV PATH="/py/bin:$PATH"
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
 
-RUN pip install -r requirements.txt
+USER django-user
 
-COPY . .
-
-RUN chmod +x /app/startup.sh
-
-CMD ["./startup.sh"]
+# Gunicorn as app server
+CMD exec gunicorn --bind 0.0.0.0:$PORT --workers 1 --threads 8 --timeout 0 mygrocerylistapp.wsgi:application

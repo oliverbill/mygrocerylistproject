@@ -1,16 +1,27 @@
-version: '3.8'
+version: '3.9'
+
 services:
-  db:
-    image: postgres:16-alpine
-    restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=mygrocerylistapp
+  app:
+    container_name: mygrocerylistapp
+    build:
+      context: .
     ports:
-      - '5432:5432'
+      - 8000:8000
     volumes:
-      - db:/var/lib/postgresql/data
-volumes:
-  db:
-    driver: local
+      - ./:/app
+      - ./credentials.json:/secrets/credentials.json
+    env_file:
+      - ./.env
+    restart: always
+
+# The proxy will help us connect to remote CloudSQL instance locally.
+# Make sure to turn off any VPNs for the proxy to work.
+  cloudsqlproxy:
+    container_name: cloudsql-proxy
+    image: gcr.io/cloudsql-docker/gce-proxy:1.19.1
+    volumes:
+      - ./credentials.json:/secrets/cloudsql/credentials.json
+    ports:
+      - 127.0.0.1:5432:5432
+    command: /cloud_sql_proxy -instances="dev-fiber-404600:europe-west1:db-mygrocerylistapi"=tcp:0.0.0.0:5432 -credential_file=/secrets/cloudsql/credentials.json
+    restart: always
