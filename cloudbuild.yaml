@@ -6,7 +6,7 @@ steps:
 
   # 1. Docker push to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', '$_AR_HOSTNAME/$PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA']
+    args: ['push', '$_AR_HOSTNAME/$_PROJECT_ID/$_REPO_NAME/$_SERVICE_NAME:$COMMIT_SHA']
     id: 'Push'
 
   # 2. Make migrations
