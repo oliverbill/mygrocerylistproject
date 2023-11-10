@@ -1,8 +1,6 @@
-import io
 import os
 
 import google.auth
-from google.cloud import secretmanager
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,40 +10,11 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 env = os.environ
 
-# Attempt to load the Project ID into the environment, safely failing on error.
-try:
-    _, os.environ["GOOGLE_CLOUD_PROJECT"] = google.auth.default()
-except google.auth.exceptions.DefaultCredentialsError:
-    pass
-
 # Use local .env file in dev mode
 if os.getenv("PYTHON_ENV") == "dev":
     DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'file': {
-            'level': 'ERROR',
-            'class': 'logging.FileHandler',
-            'filename': 'mygrocerylistapp.log',
-        },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['file','console'],
-            'level': 'DEBUG',
-            'propagate': True,
-        },
-    },
-}
 
 INSTALLED_APPS = [
     'django.contrib.admin',
