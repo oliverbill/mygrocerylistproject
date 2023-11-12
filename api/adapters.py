@@ -11,12 +11,12 @@ import ast
 #
 
 class AwsServices():
-    def get_aws_secret(secret_name):
+    def get_aws_secret(secret_name, access_key_id, access_key_secret):
         region_name = "us-east-1"
         session = boto3.session.Session()
         client = session.client(
-            aws_access_key_id = 'AKIA22TA45G7EQIKXLSW',
-            aws_secret_access_key= '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',
+            aws_access_key_id = access_key_id,
+            aws_secret_access_key= access_key_secret,
             service_name='secretsmanager',
             region_name=region_name,
         )
